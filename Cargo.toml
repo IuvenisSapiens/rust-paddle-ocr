@@ -35,7 +35,7 @@ v5 = []
 crate-type = ["lib", "cdylib"]
 
 [[bin]]
-name = "ocr"
+name = "paddleocr"
 path = "src/main.rs"
 
 [dependencies]
