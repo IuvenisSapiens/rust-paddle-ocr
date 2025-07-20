@@ -85,7 +85,7 @@ fn get_engines() -> &'static Mutex<HashMap<RocrHandle, OcrEngine>> {
 }
 
 /// 初始化OCR引擎，返回引擎句柄
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_create_engine(
     det_model_path: *const c_char,
     rec_model_path: *const c_char,
@@ -126,7 +126,7 @@ pub extern "C" fn rocr_create_engine(
 }
 
 /// 使用自定义配置创建OCR引擎，返回引擎句柄
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_create_engine_with_config(
     det_model_path: *const c_char,
     rec_model_path: *const c_char,
@@ -177,7 +177,7 @@ pub extern "C" fn rocr_create_engine_with_config(
 }
 
 /// 使用字节数据创建OCR引擎，返回引擎句柄
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_create_engine_with_bytes(
     det_model_data: *const u8,
     det_model_size: size_t,
@@ -226,7 +226,7 @@ pub extern "C" fn rocr_create_engine_with_bytes(
 }
 
 /// 销毁OCR引擎实例
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_destroy_engine(handle: RocrHandle) -> RocrStatus {
     if handle == 0 {
         return RocrStatus::InvalidParam;
@@ -246,7 +246,7 @@ pub extern "C" fn rocr_destroy_engine(handle: RocrHandle) -> RocrStatus {
 }
 
 /// 识别图像中的文本（详细模式）
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_recognize_detailed(
     handle: RocrHandle,
     image_path: *const c_char,
@@ -398,7 +398,7 @@ pub extern "C" fn rocr_recognize_detailed(
 }
 
 /// 识别图像中的文本（简单模式）
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_recognize_simple(
     handle: RocrHandle,
     image_path: *const c_char,
@@ -522,7 +522,7 @@ pub extern "C" fn rocr_recognize_simple(
 }
 
 /// 释放详细结果的内存
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_free_result(result: *mut RocrResult) {
     if result.is_null() {
         return;
@@ -553,7 +553,7 @@ pub extern "C" fn rocr_free_result(result: *mut RocrResult) {
 }
 
 /// 释放简单结果的内存
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_free_simple_result(result: *mut RocrSimpleResult) {
     if result.is_null() {
         return;
@@ -585,7 +585,7 @@ pub extern "C" fn rocr_free_simple_result(result: *mut RocrSimpleResult) {
 }
 
 /// 释放所有OCR引擎资源
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_cleanup() {
     let engines = get_engines();
     if let Ok(mut map) = engines.lock() {
@@ -594,7 +594,7 @@ pub extern "C" fn rocr_cleanup() {
 }
 
 /// 获取版本信息
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rocr_version() -> *const c_char {
     static VERSION: &str = concat!(env!("CARGO_PKG_VERSION"), "\0");
     VERSION.as_ptr() as *const c_char

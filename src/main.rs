@@ -90,9 +90,9 @@ fn main() -> OcrResult<()> {
 
     // 配置日志
     if args.verbose {
-        std::env::set_var("RUST_LOG", "info");
+        unsafe { std::env::set_var("RUST_LOG", "info") };
     } else {
-        std::env::set_var("RUST_LOG", "error");
+        unsafe { std::env::set_var("RUST_LOG", "error") };
     }
     env_logger::init();
 
